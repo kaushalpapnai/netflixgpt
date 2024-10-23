@@ -1,17 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "./Validate";
-import { createUserWithEmailAndPassword , signInWithEmailAndPassword} from "firebase/auth";
+import { createUserWithEmailAndPassword , signInWithEmailAndPassword , onAuthStateChanged} from "firebase/auth";
 import {auth} from "../utils/firbase"
 import { useNavigate } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../slices/userSlice";
+import { addUser , removeUser} from "../slices/userSlice";
 
 const Login = () => {
   const user = useSelector((store)=>store?.user)
   console.log(user)
-  const navigate = useNavigate()
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [message, setMessage] = useState(null);
   const [nameFlag,setNameFlag] = useState(true)
@@ -19,6 +18,7 @@ const Login = () => {
   const password = useRef(null);
   const name = useRef(null)
   const dispatch = useDispatch()
+
 
   function toggleSignIn() {
     setIsSignInForm(!isSignInForm);
@@ -47,7 +47,6 @@ const Login = () => {
           const { uid, email, displayName } = auth.currentUser;   // we are taking the updated user from the firebase
           dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
 
-          navigate("/browse")
         }).catch((error) => {
           // An error occurred
           console.log(error)
@@ -66,8 +65,6 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        console.log(user)
-        navigate("/browse")
       })
       .catch((error) => {
         const errorMessage = error.message;
