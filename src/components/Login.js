@@ -1,24 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "./Validate";
-import { createUserWithEmailAndPassword , signInWithEmailAndPassword , onAuthStateChanged} from "firebase/auth";
-import {auth} from "../utils/firbase"
-import { useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "../utils/firbase";
 import { updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser , removeUser} from "../slices/userSlice";
+import { addUser, removeUser } from "../slices/userSlice";
 
 const Login = () => {
-  const user = useSelector((store)=>store?.user)
-  console.log(user)
+  const user = useSelector((store) => store?.user);
+  console.log(user);
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [message, setMessage] = useState(null);
-  const [nameFlag,setNameFlag] = useState(true)
+  const [nameFlag, setNameFlag] = useState(true);
   const email = useRef(null);
   const password = useRef(null);
-  const name = useRef(null)
-  const dispatch = useDispatch()
-
+  const name = useRef(null);
+  const dispatch = useDispatch();
 
   function toggleSignIn() {
     setIsSignInForm(!isSignInForm);
@@ -27,49 +29,60 @@ const Login = () => {
   function handleSignInSignUp() {
     const res = checkValidData(email.current.value, password.current.value);
     setMessage(res);
-    if(!name?.current?.value){
-      setNameFlag(false)
-    }else{
-      setNameFlag(true)
+    if (!name?.current?.value) {
+      setNameFlag(false);
+    } else {
+      setNameFlag(true);
     }
 
-    if(res == null && !isSignInForm){
-      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
-      .then((userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        updateProfile(user, {
-          displayName: name.current.value, // photoURL: "https://example.com/jane-q-user/profile.jpg"
-          addUser
-        }).then(() => {
-          // Profile updated!
+    if (res == null && !isSignInForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value, // photoURL: "https://example.com/jane-q-user/profile.jpg"
+            addUser,
+          })
+            .then(() => {
+              // Profile updated!
 
-          const { uid, email, displayName } = auth.currentUser;   // we are taking the updated user from the firebase
-          dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
-
-        }).catch((error) => {
-          // An error occurred
-          console.log(error)
+              const { uid, email, displayName } = auth.currentUser; // we are taking the updated user from the firebase
+              dispatch(
+                addUser({ uid: uid, email: email, displayName: displayName })
+              );
+            })
+            .catch((error) => {
+              // An error occurred
+              console.log(error);
+            });
+          // ...
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          setMessage(errorMessage);
+          // ..
         });
-        // ...
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        setMessage(errorMessage)
-        // ..
-      });
     }
 
-    if(isSignInForm){
-      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        setMessage(errorMessage)
-      });
+    if (isSignInForm) {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          setMessage(errorMessage);
+        });
     }
   }
 
@@ -99,9 +112,10 @@ const Login = () => {
               className="p-4 my-4 w-full bg-gray-700 text-white"
             />
             {console.log(nameFlag)}
-            <p className="text-red-500">{nameFlag?null:"please enter name"}</p>
+            <p className="text-red-500">
+              {nameFlag ? null : "please enter name"}
+            </p>
           </div>
-          
         )}
         <input
           ref={email}

@@ -16,7 +16,7 @@ const Header = () => {
   // this is the firebase WebApi which is called automatically when user signed in or sined up or signed out
   // so that we dont have to write whole logic by ourselves
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+   const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
@@ -29,6 +29,8 @@ const Header = () => {
         navigate("/")
       }
     });
+    
+    return unsubscribe()  // we are returning this to remove the evenlistners to make our app hyginic 
   }, []);
 
   function handleSignout(){
