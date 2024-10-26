@@ -6,10 +6,9 @@ import MainContainer from './MainContainer'
 
 const Browse = () => {
   
-  useNowPlayingMovies()  // our custome hook which fetch the movies from TMDB api and store it into reudx store 
-
+   useNowPlayingMovies({now_playing:"now_playing",popular:"popular",top_rated:"top_rated",upcoming:"upcoming"})  // our custome hook which fetch the movies from TMDB api and store it into reudx store 
   return (
-    <div>
+    <div className='bg-black'>
       <Header/> 
       <MainContainer/>
     </div>
