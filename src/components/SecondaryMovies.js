@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 const SecondaryMovies = () => {
   const movies = useSelector((store) => store.movies);
-  console.log(movies)
   return (
     <div className="-mt-52 z-20 relative">
       <div className="">

@@ -1,26 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "./Validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../utils/firbase";
 import { updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser, removeUser } from "../slices/userSlice";
+import { addUser } from "../slices/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch()
   const user = useSelector((store) => store?.user);
-  console.log(user);
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [message, setMessage] = useState(null);
   const [nameFlag, setNameFlag] = useState(true);
   const email = useRef(null);
   const password = useRef(null);
   const name = useRef(null);
-  const dispatch = useDispatch();
 
   function toggleSignIn() {
     setIsSignInForm(!isSignInForm);
@@ -29,13 +27,9 @@ const Login = () => {
   function handleSignInSignUp() {
     const res = checkValidData(email.current.value, password.current.value);
     setMessage(res);
-    if (!name?.current?.value) {
-      setNameFlag(false);
-    } else {
-      setNameFlag(true);
-    }
+    if(message) return
 
-    if (res == null && !isSignInForm) {
+    if (!isSignInForm) {
       createUserWithEmailAndPassword(
         auth,
         email.current.value,
@@ -47,15 +41,11 @@ const Login = () => {
           updateProfile(user, {
             displayName: name.current.value, // photoURL: "https://example.com/jane-q-user/profile.jpg"
             addUser,
+          }).then(()=>{
+            // we are storing the user in the redux here also after header because we updated the userName so we have to store the updated user also in the store
+            const { uid, email, displayName } = user;
+            dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
           })
-            .then(() => {
-              // Profile updated!
-
-              const { uid, email, displayName } = auth.currentUser; // we are taking the updated user from the firebase
-              dispatch(
-                addUser({ uid: uid, email: email, displayName: displayName })
-              );
-            })
             .catch((error) => {
               // An error occurred
               console.log(error);
@@ -64,12 +54,10 @@ const Login = () => {
         })
         .catch((error) => {
           const errorMessage = error.message;
-          setMessage(errorMessage);
+          console.log(errorMessage)
           // ..
         });
-    }
-
-    if (isSignInForm) {
+    }else{
       signInWithEmailAndPassword(
         auth,
         email.current.value,
