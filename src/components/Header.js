@@ -22,7 +22,7 @@ const Header = () => {
       });
   }
 
-
+ 
 
   // this is the firebase WebApi which is called automatically when user signed in or sined up or signed out
   // so that we dont have to write whole logic by ourselves
