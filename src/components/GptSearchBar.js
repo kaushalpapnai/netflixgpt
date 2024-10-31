@@ -43,18 +43,18 @@ const GptSearchBar = () => {
   }, [geminiMovies]);
 
  return (
-   <div className="flex  pt-32 justify-center mb-10 space-y-6">
-     <form className="flex items-center space-x-2  p-4 rounded-lg ">
+   <div className="flex flex-col items-center pt-20 sm:pt-32 px-4 mb-10 space-y-6 w-full">
+     <form className="flex flex-col sm:flex-row items-center w-full max-w-lg space-y-4 sm:space-y-0 sm:space-x-2 p-4 rounded-lg">
        <input
          ref={searchText}
          type="text"
          placeholder="What would you like to watch today..."
-         className="p-3 w-80 md:w-96 text-white bg-gray-800 rounded-l-lg focus:outline-none placeholder-gray-400"
+         className="p-3 w-full sm:w-80 md:w-96 text-white bg-gray-800 rounded-lg sm:rounded-l-lg focus:outline-none placeholder-gray-400"
        />
        <button
          onClick={handleSearch}
          type="submit"
-         className="px-4 py-3 bg-gradient-to-r from-purple-500 to-red-500 text-white font-semibold rounded-r-lg hover:from-pink-500 hover:to-yellow-500 transition-all"
+         className="px-4 py-3 w-full sm:w-auto bg-gradient-to-r from-purple-500 to-red-500 text-white font-semibold rounded-lg sm:rounded-r-lg hover:from-pink-500 hover:to-yellow-500 transition-all"
        >
          Search
        </button>

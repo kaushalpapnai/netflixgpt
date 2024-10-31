@@ -1,9 +1,10 @@
 import { API_OPTIONS } from '../utils/constants'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addNowPlayingMovies, addPopularMovies, addTopRatedMovies, addUpcomingMoives } from '../slices/movieSlice'
 import { useEffect } from 'react'
 
 const useNowPlayingMovies = ({now_playing,popular,top_rated,upcoming})=>{
+   const {nowPlayingMovies,popularMovies,topRatedMovies,upcomingMovies} = useSelector((store)=>store.movies)
     const dispatch = useDispatch()
 
     const getNowPlayingMovies = async ()=>{
@@ -32,11 +33,19 @@ const useNowPlayingMovies = ({now_playing,popular,top_rated,upcoming})=>{
    }
   
      useEffect(()=>{
-          getNowPlayingMovies()
-          getPopularMovies()
-          getTopRatedMovies()
-          getUpcomingMovies()
-     },[])
+      if(!nowPlayingMovies){  // we are doing memoization to reduce api calls if the data is present in store than do not make api call
+        getNowPlayingMovies()
+      }
+      if(!popularMovies){  
+        getPopularMovies()
+      }
+      if(!topRatedMovies){  
+        getTopRatedMovies()
+      }
+      if(!upcomingMovies){  
+        getUpcomingMovies()
+      }
+    },[])
 }
 
 export default useNowPlayingMovies

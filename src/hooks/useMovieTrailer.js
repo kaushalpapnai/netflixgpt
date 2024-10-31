@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { API_OPTIONS } from "../utils/constants";
 
+
 const useMovieTrailer = (videoId) => {
   const [videoKey, setVideoKey] = useState(null);
   const getVideoMovie = async () => {
@@ -10,13 +11,15 @@ const useMovieTrailer = (videoId) => {
     );
     const json = await data.json();
     const filterData = json.results.filter((video) => video.type == "Trailer");
-    const trailer = filterData.lenght ? filterData[0] : json.results[0]; // we are actually checking if the fileter data is empty then simply play any video from json.results
+    const trailer = filterData.length > 0 ? filterData[0] : json.results[0]; // we are actually checking if the fileter data is empty then simply play any video from json.results
     setVideoKey(trailer.key);
   };
 
   useEffect(() => {
-    getVideoMovie();
-  }, []);
+    if (videoId) {
+        getVideoMovie();
+    }
+}, [videoId]);
   return videoKey;
 };
 
