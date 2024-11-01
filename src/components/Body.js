@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Login from "./Login";
 import Browse from "./Browse";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Player from "./Player";
 
 
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
     path: "/browse",
     element: <Browse />,
   },
+  {
+    path:"/player",
+    element:<Player/>
+  }
 ]);
 
 const Body = () => {
@@ -23,6 +28,7 @@ const Body = () => {
       <div>
         <Login />
         <Browse />
+        <Player/>
       </div>
     </RouterProvider>
   );

@@ -3,13 +3,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const geminiSlice = createSlice({
     name: "gemini",
-    initialState: null,
+    initialState: {
+        movies: [],
+        error: ''
+    },
     reducers: {
         addMovieName:(state,action)=>{
-            return action.payload
-        }
+            state.movies = action.payload;
+            state.error = ''; 
+        },
+        setError: (state, action) => {
+            state.error = action.payload; 
+          },
     }
 })
 
-export const {addMovieName} = geminiSlice.actions;
+export const {addMovieName , setError} = geminiSlice.actions;
 export default geminiSlice.reducer

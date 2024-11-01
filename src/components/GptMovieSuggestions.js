@@ -3,11 +3,12 @@ import { useSelector } from "react-redux";
 import MovieList from "./MovieList";
 
 const GptMovieSuggestions = () => {
-  const movieNames = useSelector((store) => store.gemini);
+  const movieNames = useSelector((store) => store.gemini.movies);
   const movieResults = useSelector((store) => store.gpt.gptMovies);
 
-  if (!movieNames || !movieResults || movieNames.length !== movieResults.length) {
-    return null;
+  // Check to ensure both arrays are present and have the same length before rendering
+  if (!movieNames || !movieResults || movieNames.length === 0 || movieNames.length !== movieResults.length) {
+    return null; // Don't render if there's no valid data
   }
 
   return (

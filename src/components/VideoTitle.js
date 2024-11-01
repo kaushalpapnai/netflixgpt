@@ -3,12 +3,12 @@ import React from 'react';
 const VideoTitle = ({ title, overview }) => {
     return (
         <div className="pt-[40%] md:pt-[30%] lg:pt-[15%] px-4 md:px-12 lg:px-24 absolute bg-gradient-to-r from-black w-full aspect-video text-white flex flex-col items-center lg:items-start lg:text-left">
-            <h1 className="font-bold text-2xl md:text-3xl lg:text-5xl text-center lg:text-left mb-2 md:mb-4 lg:mb-4">
+            <h1 className="font-bold text-xl md:text-3xl lg:text-5xl text-center lg:text-left mb-2 md:mb-3 lg:mb-4">
                 {title}
             </h1>
 
             {/* Display overview only on large screens */}
-            <p className="py-4 text-sm md:text-base lg:text-lg lg:w-2/4 hidden lg:block">
+            <p className="text-sm lg:text-lg md:py-1 md:text-sm lg:w-2/4 hidden lg:block">
                 {overview}
             </p>
 

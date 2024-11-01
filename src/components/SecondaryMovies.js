@@ -6,7 +6,7 @@ const SecondaryMovies = () => {
   const movies = useSelector((store) => store.movies);
 
   return (
-    <div className="relative px-4 md:px-8 lg:px-16 mt-4  md:-mt-28 lg:-mt-52">
+    <div className="relative px-4 md:px-8 lg:px-16 mt-4 lg:-mt-24 xl:-mt-36 2xl:-mt-48">
       <div className="space-y-8">
         <MovieList title={"Now Playing"} movies={movies.nowPlayingMovies} />
         <MovieList title={"Top Rated Movies"} movies={movies.topRatedMovies} />
